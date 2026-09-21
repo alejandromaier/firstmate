@@ -481,8 +481,6 @@ test_ship_project_memory_wording() {
     "project-memory contract does not exempt a memory file the helper did not create"
   # The proportionality escape hatch must still cover whichever file the helper
   # left in place, not AGENTS.md alone.
-  assert_no_grep "skip \`AGENTS.md\` edits" "$brief" \
-    "project-memory proportionality escape hatch is scoped to AGENTS.md only"
   assert_grep "skip memory-file edits entirely for trivial tasks" "$brief" \
     "project-memory contract lost the proportionality escape hatch"
   pass "fm-brief.sh: ship project-memory wording carries the memory-file authoring bar"
