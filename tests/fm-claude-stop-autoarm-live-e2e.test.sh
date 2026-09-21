@@ -134,12 +134,19 @@ grep -q 'stale: fixture-rapid-2' "$TRANSCRIPT" || fail "second rapid rewake reas
   || fail "Claude emitted no logged Bash tool calls"
 ! grep -q 'fm-session-start.sh' "$HOME_DIR/state/tool-calls.log" \
   || fail "model issued a redundant session-start command: $(cat "$HOME_DIR/state/tool-calls.log")"
-grep -q '"hook_response"' "$TRANSCRIPT" \
-  || fail "Claude transcript lacks SessionStart hook output"
-grep -q 'SESSION START' "$TRANSCRIPT" \
-  || fail "SessionStart hook output lacks the full session-start digest"
-grep -q 'lock acquired: harness pid' "$TRANSCRIPT" \
-  || fail "SessionStart hook output lacks the stale-lock reclaim"
+DIGEST_EVENTS=$(jq -c --arg heading "SESSION START - $HOME_DIR" '
+  select(.type == "system" and .subtype == "hook_response" and .hook_event == "SessionStart")
+  | select(.stdout | contains($heading))
+' "$TRANSCRIPT" 2>/dev/null)
+[ "$(printf '%s' "$DIGEST_EVENTS" | jq -s 'length')" = 1 ] \
+  || fail "expected exactly one SessionStart hook_response carrying the session-start digest"
+DIGEST=$(printf '%s' "$DIGEST_EVENTS" | jq -r '.stdout')
+printf '%s' "$DIGEST" | grep -q '^lock acquired: harness pid [0-9][0-9]*$' \
+  || fail "SessionStart hook digest lacks the stale-lock reclaim"
+! printf '%s' "$DIGEST" | grep -q '^●  STARTUP TRUNCATED - ' \
+  || fail "SessionStart hook digest was truncated"
+printf '%s' "$DIGEST" | grep -q '^The digest above is complete for this session start\.' \
+  || fail "SessionStart hook digest lacks its completion marker"
 [ "$(cat "$HOME_DIR/state/.lock" 2>/dev/null)" != 9999999 ] \
   || fail "session start did not reclaim the stale dead-owner lock"
 if [ -f "$HOME_DIR/state/tool-calls.log" ]; then
