@@ -470,7 +470,17 @@ test_ship_project_memory_wording() {
     "project-memory contract lost pointer-over-copy guidance"
   assert_grep "follow \`$ROOT/bin/fm-ensure-agents-md.sh\`'s self-governance contract" "$brief" \
     "project-memory contract no longer defers to the ensure helper"
-  pass "fm-brief.sh: ship project-memory wording carries the AGENTS.md authoring bar"
+  # The section tells the worker to record in whichever memory file the helper
+  # leaves in place, so the deferral and the proportionality escape hatch must
+  # cover that same file. Naming AGENTS.md there leaves a CLAUDE.md-only
+  # project outside the escape hatch and owing an unrequested edit.
+  assert_no_grep "If you touch a project \`AGENTS.md\`" "$brief" \
+    "project-memory self-governance deferral is scoped to AGENTS.md only"
+  assert_no_grep "skip \`AGENTS.md\` edits" "$brief" \
+    "project-memory proportionality escape hatch is scoped to AGENTS.md only"
+  assert_grep "skip memory-file edits entirely for trivial tasks" "$brief" \
+    "project-memory contract lost the proportionality escape hatch"
+  pass "fm-brief.sh: ship project-memory wording carries the memory-file authoring bar"
 }
 
 # Read the memory command back out of a generated brief exactly as a crewmate
