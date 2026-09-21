@@ -470,12 +470,17 @@ test_ship_project_memory_wording() {
     "project-memory contract lost pointer-over-copy guidance"
   assert_grep "follow \`$ROOT/bin/fm-ensure-agents-md.sh\`'s self-governance contract" "$brief" \
     "project-memory contract no longer defers to the ensure helper"
-  # The section tells the worker to record in whichever memory file the helper
-  # leaves in place, so the deferral and the proportionality escape hatch must
-  # cover that same file. Naming AGENTS.md there leaves a CLAUDE.md-only
-  # project outside the escape hatch and owing an unrequested edit.
-  assert_no_grep "If you touch a project \`AGENTS.md\`" "$brief" \
-    "project-memory self-governance deferral is scoped to AGENTS.md only"
+  # The helper only ever writes the self-governance section into an AGENTS.md,
+  # and the --no-promote path returns before doing even that, so the deferral
+  # must stay scoped to AGENTS.md and must say that a CLAUDE.md the helper left
+  # alone owes no such section - otherwise the only way to comply in a
+  # CLAUDE.md-only project is an unrequested structural edit.
+  assert_grep "If you touch a project \`AGENTS.md\`" "$brief" \
+    "project-memory self-governance deferral is no longer scoped to AGENTS.md"
+  assert_grep "owes no self-governance section" "$brief" \
+    "project-memory contract does not exempt a memory file the helper did not create"
+  # The proportionality escape hatch must still cover whichever file the helper
+  # left in place, not AGENTS.md alone.
   assert_no_grep "skip \`AGENTS.md\` edits" "$brief" \
     "project-memory proportionality escape hatch is scoped to AGENTS.md only"
   assert_grep "skip memory-file edits entirely for trivial tasks" "$brief" \
