@@ -477,8 +477,8 @@ test_ship_project_memory_wording() {
   # CLAUDE.md-only project is an unrequested structural edit.
   assert_grep "If you touch a project \`AGENTS.md\`" "$brief" \
     "project-memory self-governance deferral is no longer scoped to AGENTS.md"
-  assert_grep "owes no self-governance section" "$brief" \
-    "project-memory contract does not exempt a memory file the helper did not create"
+  assert_grep "the helper left in place owes no self-governance section" "$brief" \
+    "project-memory contract no longer scopes the self-governance exemption to the memory file the helper left in place"
   # The proportionality escape hatch must still cover whichever file the helper
   # left in place, not AGENTS.md alone.
   assert_grep "skip memory-file edits entirely for trivial tasks" "$brief" \

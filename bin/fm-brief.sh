@@ -557,7 +557,7 @@ If \`AGENTS.md\` or \`CLAUDE.md\` already exists, or if this task produced durab
 Record the knowledge in whichever memory file that command leaves in place, and never change which file this project uses as a side effect of this task; switching it is its own separate change.
 Record only project knowledge useful to almost every future session.
 For anything the codebase already shows, prefer a pointer to the authoritative file, command, or doc over copying the detail.
-If you touch a project \`AGENTS.md\`, follow \`$FM_ROOT/bin/fm-ensure-agents-md.sh\`'s self-governance contract in the same pass; a memory file that helper did not create owes no self-governance section.
+If you touch a project \`AGENTS.md\`, follow \`$FM_ROOT/bin/fm-ensure-agents-md.sh\`'s self-governance contract in the same pass; a \`CLAUDE.md\` the helper left in place owes no self-governance section.
 Keep it proportionate: skip memory-file edits entirely for trivial tasks that produced no durable project knowledge.
 
 $DOD
