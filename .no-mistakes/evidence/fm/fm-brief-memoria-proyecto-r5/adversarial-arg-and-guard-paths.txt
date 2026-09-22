@@ -1,0 +1,25 @@
+=== adversarial: argument-boundary and guard paths under --no-promote (exit codes) ===
+$ fm-ensure-agents-md.sh --promote-everything /tmp/fm-ws3-lab.aqB1uF/adv
+usage: fm-ensure-agents-md.sh [--no-promote] [repo-or-worktree-dir]
+
+--no-promote leaves a real non-pointer CLAUDE.md in place as the project's
+exit=1
+
+$ fm-ensure-agents-md.sh --no-promote /tmp/fm-ws3-lab.aqB1uF/adv /tmp/fm-ws3-lab.aqB1uF/adv
+usage: fm-ensure-agents-md.sh [--no-promote] [repo-or-worktree-dir]
+
+--no-promote leaves a real non-pointer CLAUDE.md in place as the project's
+exit=1
+
+$ fm-ensure-agents-md.sh /tmp/fm-ws3-lab.aqB1uF/adv2 --no-promote
+kept: CLAUDE.md is this project's agent memory file in /private/tmp/fm-ws3-lab.aqB1uF/adv2; record durable knowledge there and migrate it to AGENTS.md as its own change
+exit=0
+
+$ fm-ensure-agents-md.sh --no-promote /tmp/fm-ws3-lab.aqB1uF/adv3
+conflict: both AGENTS.md and CLAUDE.md are real files in /private/tmp/fm-ws3-lab.aqB1uF/adv3; reconcile them manually
+exit=1
+
+$ fm-ensure-agents-md.sh --no-promote /tmp/fm-ws3-lab.aqB1uF/does-not-exist
+error: not a directory: /tmp/fm-ws3-lab.aqB1uF/does-not-exist
+exit=1
+

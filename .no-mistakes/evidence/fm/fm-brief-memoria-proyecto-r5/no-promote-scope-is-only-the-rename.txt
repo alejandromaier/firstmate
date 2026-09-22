@@ -1,0 +1,17 @@
+=== --no-promote must NOT suppress anything except the CLAUDE.md-only rename ===
+$ fm-ensure-agents-md.sh --no-promote <repo with a real pre-existing AGENTS.md>
+updated: added ## Maintaining this file to AGENTS.md and wrote CLAUDE.md @AGENTS.md pointer in /private/tmp/fm-ws3-lab.aqB1uF/agents-existing
+exit=0
+AGENTS.md
+CLAUDE.md
+--- self-governance section present in the pre-existing AGENTS.md:
+1
+--- CLAUDE.md pointer written:
+<!-- Points Claude at AGENTS.md via import; edit AGENTS.md, not this file. -->
+@AGENTS.md
+
+=== canonical CLAUDE.md pointer with no AGENTS.md: still completed under --no-promote ===
+created: AGENTS.md and kept CLAUDE.md @AGENTS.md pointer in /private/tmp/fm-ws3-lab.aqB1uF/pointer-only
+exit=0
+AGENTS.md
+CLAUDE.md

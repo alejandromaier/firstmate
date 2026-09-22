@@ -1,0 +1,37 @@
+=== ws3-shaped project BEFORE the fix (base commit 6f0f139 helper, no flag) ===
+$ ls
+CLAUDE.md
+CONTEXT.md
+TODO.md
+$ fm-ensure-agents-md.sh .
+promoted: moved CLAUDE.md to AGENTS.md and wrote CLAUDE.md @AGENTS.md pointer in /private/tmp/fm-ws3-lab.aqB1uF/before
+$ ls
+AGENTS.md
+CLAUDE.md
+CONTEXT.md
+TODO.md
+--- CLAUDE.md is now the stub the cross-references point at:
+<!-- Points Claude at AGENTS.md via import; edit AGENTS.md, not this file. -->
+@AGENTS.md
+--- dangling pointers left behind:
+/tmp/fm-ws3-lab.aqB1uF/before/CONTEXT.md:1:Ver la convencion en `CLAUDE.md`
+/tmp/fm-ws3-lab.aqB1uF/before/TODO.md:3:Convencion documentada en CLAUDE.md
+
+=== same project AFTER the fix (branch helper, as the brief now invokes it) ===
+$ ls
+CLAUDE.md
+CONTEXT.md
+TODO.md
+$ fm-ensure-agents-md.sh --no-promote .
+kept: CLAUDE.md is this project's agent memory file in /private/tmp/fm-ws3-lab.aqB1uF/after; record durable knowledge there and migrate it to AGENTS.md as its own change
+exit=0
+$ ls
+CLAUDE.md
+CONTEXT.md
+TODO.md
+--- CLAUDE.md content is untouched, so TODO.md:  and CONTEXT.md still resolve:
+# ws3 agent memory
+
+## Conventions
+
+Run the suite with `make test`.
